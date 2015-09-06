@@ -1,0 +1,181 @@
+using System;
+
+namespace ConsoleProcessRedirection
+{
+    using System.Threading;
+    using System.Text;
+    using System.IO;
+
+    /// <summary>
+    /// Summary description for IOHandler.
+    /// </summary>
+    
+    interface IIOHandler
+    {
+        WaitHandle
+            HandleIO();
+
+        void
+            Stop();
+
+        string
+            GetIO();
+
+        void
+            AddNewIO( string IOData );
+    }
+
+    public class IOBuffer : IIOHandler
+    {
+        public
+            IOBuffer()
+        {
+            _EventIOAvailable = new ManualResetEvent( false );   
+        }
+
+        public
+        WaitHandle
+            HandleIO()
+        {
+            return _EventIOAvailable;
+        }
+
+        public
+        void
+            Stop()
+        {
+        }
+
+        public
+            string
+            GetIO()
+        {
+            string NewData;
+
+            lock ( _NewData )
+            {
+                NewData = _NewData;
+
+                _NewData = "";
+            }
+
+            _EventIOAvailable.Reset();
+
+            return NewData;
+        }
+        
+        public
+            void
+            AddNewIO( string IOData )
+        {
+            if ( null == IOData )
+            {
+                return;
+            }
+
+            lock ( _NewData )
+            {
+                _NewData += IOData;
+            }
+
+            _EventIOAvailable.Set();
+        }
+
+        protected
+        string           _NewData = "";
+        
+        protected
+        ManualResetEvent _EventIOAvailable;
+    }
+
+    public class OutputHandler : IOBuffer
+    {
+        public OutputHandler( StreamReader OutputStream )
+        {
+            _OutputStream = OutputStream.BaseStream;
+
+			_OutputStreamReader = OutputStream;
+            
+			_Encoding = OutputStream.CurrentEncoding; 
+        }
+
+        public
+            new
+            WaitHandle
+            HandleIO()
+        {
+            AsyncCallback OutputAsyncCallback = new AsyncCallback( HandleOutput );
+
+
+            IAsyncResult Result = _OutputStream.BeginRead( 
+                _Buffer,
+                0,
+                _Buffer.Length,
+                OutputAsyncCallback,
+                this);
+
+            return _EventIOAvailable;
+        }   
+
+        public
+            new
+            void
+            Stop()
+        {
+            _OutputStream.Close();
+        }
+
+        void
+            HandleOutput( 
+            IAsyncResult Result )
+        {
+            if ( Result.IsCompleted )
+            {
+				char[] buf = new char [4096];
+
+		
+				_OutputStreamReader.Read( buf, 0, buf.Length );
+
+				Console.WriteLine( buf );
+
+                int BytesRead;
+
+
+                BytesRead = _OutputStream.EndRead( Result );
+					
+				if ( BytesRead > 0 )
+				{
+					string NewOutput = _Encoding.GetString( _Buffer, 0, BytesRead );
+			
+					int BytesDecoded = _Encoding.GetByteCount( NewOutput );
+	    
+					if ( BytesDecoded != BytesRead )
+					{
+						Console.WriteLine( "Incomplete decoding" );
+					}
+					
+					char[] Block = _Encoding.GetChars( _Buffer, 0, BytesRead );
+
+					//Console.WriteLine( _OutputStreamReader.ReadToEnd() );
+						
+
+					/*Console.WriteLine ( BytesRead.ToString() + "'" + ( NewOutput.Substring(0,1) ) + "'" );
+					Console.WriteLine ( NewOutput );*/
+
+					AddNewIO( NewOutput );
+				}
+            }
+        }
+
+        Stream       _OutputStream;
+		StreamReader _OutputStreamReader;
+        Encoding     _Encoding;
+        byte[]       _Buffer = new byte[4096];
+    }
+
+    public class InputHandler : IOBuffer
+    {
+    }
+}
+
+

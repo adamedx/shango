@@ -1,0 +1,157 @@
+using System;
+
+namespace ConsoleProcessRedirection
+{
+    using System.Threading;
+    using System.Text;
+    using System.IO;
+
+    /// <summary>
+    /// Summary description for IOHandler.
+    /// </summary>
+    
+    interface IIOHandler
+    {
+        WaitHandle
+            HandleIO();
+
+        void
+            Stop();
+
+        string
+            GetIO();
+
+        void
+            AddNewIO( string IOData );
+    }
+
+    public class IOBuffer : IIOHandler
+    {
+        public
+            IOBuffer()
+        {
+            _EventIOAvailable = new ManualResetEvent( false );   
+        }
+
+        public
+        WaitHandle
+            HandleIO()
+        {
+            return _EventIOAvailable;
+        }
+
+        public
+        void
+            Stop()
+        {
+        }
+
+        public
+            string
+            GetIO()
+        {
+            string NewData;
+
+            lock ( _NewData )
+            {
+                NewData = _NewData;
+
+                _NewData = "";
+
+                 _EventIOAvailable.Reset();
+            }         
+
+            return NewData;
+        }
+        
+        public
+            void
+            AddNewIO( string IOData )
+        {
+            if ( null == IOData )
+            {
+                return;
+            }
+
+            lock ( _NewData )
+            {
+                _NewData += IOData;
+            }
+
+            _EventIOAvailable.Set();
+        }
+
+        protected
+        string           _NewData = "";
+        
+        protected
+        ManualResetEvent _EventIOAvailable;
+    }
+
+    public class OutputHandler : IOBuffer
+    {
+        public OutputHandler( StreamReader OutputStream )
+        {
+			_OutputStream = OutputStream;
+            
+			_Encoding = OutputStream.CurrentEncoding; 
+        }
+
+        public
+            new
+            WaitHandle
+            HandleIO()
+        {
+			_OutputThread = new Thread( new ThreadStart( HandleOutput ) );
+
+            _OutputThread.Start();
+
+            return _EventIOAvailable;
+        }   
+
+        public
+            new
+            void
+            Stop()
+        {
+			_OutputThread.Interrupt();
+        }
+
+        void
+            HandleOutput()
+        {
+            try 
+            {
+                while ( true )
+                {
+                    char[] NewChar = new char[1];
+
+                    _OutputStream.ReadBlock( NewChar, 0, 1 );
+
+                    string NewString = new string( NewChar );
+
+                    Console.WriteLine( "'" + NewString + "'" );
+
+                    AddNewIO( NewString );
+                }
+            }
+            catch ( ThreadInterruptedException )
+            {
+            }
+            catch 
+            {
+            }
+        }
+
+        Thread       _OutputThread;
+		StreamReader _OutputStream;
+		Encoding     _Encoding;
+        byte[]       _Buffer = new byte[4096];
+    }
+
+    public class InputHandler : IOBuffer
+    {
+    }
+}
+
+

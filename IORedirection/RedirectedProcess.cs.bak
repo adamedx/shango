@@ -1,0 +1,189 @@
+using System;
+
+
+namespace ConsoleProcessRedirection
+{
+    using System.Diagnostics;
+    using System.Threading;
+    using System.IO;
+    using System.Text;
+
+	/// <summary>
+	/// Summary description for RedirectedProcess.
+	/// </summary>
+	public class RedirectedProcess
+	{
+		public RedirectedProcess( ITerminal ClientTerminal )
+		{
+            _InputHandler = new InputHandler();
+
+            _TerminalClient = ClientTerminal;
+		}
+
+        public
+            void
+            Start( string CommandLine )
+        {
+            ProcessStartInfo StartInfo = new ProcessStartInfo( CommandLine );
+
+            StartInfo.UseShellExecute = false;
+            StartInfo.RedirectStandardError = true;
+            StartInfo.RedirectStandardOutput = true;
+            StartInfo.RedirectStandardInput = true;
+
+            _Process = Process.Start( StartInfo );
+
+            InitiateIO();
+        }
+
+        public
+            void
+            Join (
+            string Machine,
+            string UserDefinedName )
+        {
+        }
+
+        public
+            void
+            Stop()
+        {
+            try
+            {
+                try
+                {
+                    _IOThread.Interrupt();
+                }
+                catch
+                {
+                }
+
+                _Process.CloseMainWindow();
+
+            }
+            catch
+            {
+            }
+        }
+
+        public
+            void
+            SendInput( string NewInput )
+        {
+            _InputHandler.AddNewIO( NewInput );
+        }
+
+        public
+            Process
+            GetProcess()
+        {
+            return _Process;
+        }
+
+        void
+            InitiateIO()
+        {
+            _IOThread = new Thread( new ThreadStart( ProcessIO ) );
+
+            _IOThread.Start();
+        }
+
+        void
+            ProcessIO()
+        {
+            OutputHandler OutHandler = new OutputHandler ( _Process.StandardOutput );
+            OutputHandler ErrorHandler = new OutputHandler ( _Process.StandardError );
+            
+            StreamWriter InputStream = _Process.StandardInput;
+
+            ManualResetEvent OutEvent = OutHandler.HandleIO();
+            ManualResetEvent ErrorEvent = ErrorHandler.HandleIO();
+            ManualResetEvent InputEvent = _InputHandler.HandleIO();
+
+            WaitHandle[] Events = new WaitHandle[3];
+
+            Events[0] = OutEvent;
+            Events[1] = ErrorEvent;
+            Events[2] = InputEvent;
+
+            bool bTerminated = false;
+
+            try 
+            {
+                do
+                {
+                    int iEvent = WaitHandle.WaitAny( Events );
+
+                    switch ( iEvent )
+                    {
+                        case 0:
+                            //
+                            // New standard output
+                            //
+                            try
+                            {
+                                StringBuilder OutString;
+
+                                OutString = new StringBuilder ( OutHandler.GetIO() );
+
+                                _TerminalClient.WriteTo(
+                                    OutString,
+                                    Terminal.OutputType.StandardOutput);
+                            }
+                            catch
+                            {
+                                bTerminated = true;
+                            }
+                            break;
+                        case 1:
+                            //
+                            // New error output
+                            //
+                            try
+                            {
+                                StringBuilder ErrorString;
+
+                                ErrorString = new StringBuilder ( ErrorHandler.GetIO() );
+
+                                _TerminalClient.WriteTo(
+                                    ErrorString,
+                                    Terminal.OutputType.StandardError);
+                            }
+                            catch
+                            {
+                                bTerminated = true;
+                            }
+                            break;
+                        case 2:
+                            //
+                            // New input
+                            //
+                            try
+                            {
+                                InputStream.Write( _InputHandler.GetIO() );
+                            }
+                            catch
+                            {
+                                bTerminated = true;
+                            }
+
+                            break;
+                    }
+                } while ( ! bTerminated );
+            }
+            catch ( ThreadInterruptedException )
+            {
+            }
+
+            _InputHandler.Stop();
+            OutHandler.Stop();
+            ErrorHandler.Stop();
+        }
+
+        InputHandler _InputHandler;
+        ITerminal    _TerminalClient;
+        Process      _Process;
+        Thread       _IOThread;
+
+	}
+}

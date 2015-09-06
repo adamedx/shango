@@ -1,0 +1,40 @@
+import "C:\Program Files\Microsoft Visual Studio .NET\Vc7\PlatformSDK\include\prsht.idl";
+import "C:\Program Files\Microsoft Visual Studio .NET\Vc7\PlatformSDK\include\mshtml.idl";
+import "c:\program files\microsoft visual studio .net\vc7\platformsdk\include\dimm.idl";
+import "C:\Program Files\Microsoft Visual Studio .NET\Vc7\PlatformSDK\include\mshtmhst.idl";
+import "c:\program files\microsoft visual studio .net\vc7\platformsdk\include\docobj.idl";
+import "C:\Program Files\Microsoft Visual Studio .NET\Vc7\PlatformSDK\include\exdisp.idl";
+import "C:\Program Files\Microsoft Visual Studio .NET\Vc7\PlatformSDK\include\objsafe.idl";
+
+[
+	object,
+	uuid(D1A001AF-641A-4767-82FA-E40820DD6B6E),
+	dual,
+	helpstring("IWinUtilities Interface"),
+	pointer_default(unique)
+] 
+#line 14 "c:\\documents and settings\\adamedw.afrodemus\\my documents\\visual studio projects\\winutil\\winutilities.h"
+interface IWinUtilities : IDispatch {
+#line 16 "c:\\documents and settings\\adamedw.afrodemus\\my documents\\visual studio projects\\winutil\\winutilities.h"
+	[id(1),helpstring("method SetTransparency")] HRESULT  SetTransparency([in] VARIANT hWnd, [in] VARIANT bTransparent, [in] VARIANT ColorRef, [in] VARIANT BlendLevel, [in] VARIANT dwFlags);
+};
+
+
+[ version(1.0), uuid(49C6B4C7-06E7-4E87-B5C1-43EE16C045D3), helpstring("WinUtil 1.0 Type Library") ]
+library WinUtil
+{
+	importlib("stdole2.tlb");
+	importlib("olepro32.dll");
+
+	[
+		version(1.0),
+		uuid(27211BD0-DC68-4186-BEA3-6D1E02A15B66),
+		helpstring("WinUtilities Class")
+	] 
+#line 40 "c:\\documents and settings\\adamedw.afrodemus\\my documents\\visual studio projects\\winutil\\winutilities.h"
+	coclass CWinUtilities {
+		interface IWinUtilities;
+	};
+
+}
+

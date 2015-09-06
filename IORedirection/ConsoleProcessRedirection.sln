@@ -1,0 +1,85 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenericParser", "..\GenericParser\GenericParser.csproj", "{BC9EF6CD-233D-4C53-86D3-7223EE805EF5}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shango", "..\Shango\Shango.csproj", "{FDABE69E-CE2C-4D21-A5C3-9D1895A8F61E}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemInterface", "..\SystemInterface\SystemInterface.csproj", "{6B6EDB98-B545-4FD5-9CC3-8009C05247D5}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleProcessRedirection", "ConsoleProcessRedirection.csproj", "{9A08FF8C-BD7D-4076-BE9B-BCD71681CB1F}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphTheory", "..\GraphTheory\GraphTheory.csproj", "{DA8DBCFF-E8DE-463A-90C9-445A82758A69}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xango", "..\Xango\Xango.csproj", "{1960CB65-BD01-4377-AA12-55A32E51A5FD}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandProcessor", "..\CommandProcessor\CommandProcessor.csproj", "{A923CEE7-2009-44F5-92AC-819697A20F3C}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StandardCommands", "..\StandardCommands\StandardCommands.csproj", "{B0064509-C7AD-4BA5-9A26-366B2E1795C6}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DefaultParser", "..\DefaultParser\DefaultParser.csproj", "{44C97E64-40DC-4F68-AD5F-B627BA601BAF}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{BC9EF6CD-233D-4C53-86D3-7223EE805EF5}.Debug.ActiveCfg = Debug|.NET
+		{BC9EF6CD-233D-4C53-86D3-7223EE805EF5}.Debug.Build.0 = Debug|.NET
+		{BC9EF6CD-233D-4C53-86D3-7223EE805EF5}.Release.ActiveCfg = Release|.NET
+		{BC9EF6CD-233D-4C53-86D3-7223EE805EF5}.Release.Build.0 = Release|.NET
+		{FDABE69E-CE2C-4D21-A5C3-9D1895A8F61E}.Debug.ActiveCfg = Debug|.NET
+		{FDABE69E-CE2C-4D21-A5C3-9D1895A8F61E}.Debug.Build.0 = Debug|.NET
+		{FDABE69E-CE2C-4D21-A5C3-9D1895A8F61E}.Release.ActiveCfg = Release|.NET
+		{FDABE69E-CE2C-4D21-A5C3-9D1895A8F61E}.Release.Build.0 = Release|.NET
+		{6B6EDB98-B545-4FD5-9CC3-8009C05247D5}.Debug.ActiveCfg = Debug|.NET
+		{6B6EDB98-B545-4FD5-9CC3-8009C05247D5}.Debug.Build.0 = Debug|.NET
+		{6B6EDB98-B545-4FD5-9CC3-8009C05247D5}.Release.ActiveCfg = Release|.NET
+		{6B6EDB98-B545-4FD5-9CC3-8009C05247D5}.Release.Build.0 = Release|.NET
+		{9A08FF8C-BD7D-4076-BE9B-BCD71681CB1F}.Debug.ActiveCfg = Debug|.NET
+		{9A08FF8C-BD7D-4076-BE9B-BCD71681CB1F}.Debug.Build.0 = Debug|.NET
+		{9A08FF8C-BD7D-4076-BE9B-BCD71681CB1F}.Release.ActiveCfg = Release|.NET
+		{9A08FF8C-BD7D-4076-BE9B-BCD71681CB1F}.Release.Build.0 = Release|.NET
+		{DA8DBCFF-E8DE-463A-90C9-445A82758A69}.Debug.ActiveCfg = Debug|.NET
+		{DA8DBCFF-E8DE-463A-90C9-445A82758A69}.Debug.Build.0 = Debug|.NET
+		{DA8DBCFF-E8DE-463A-90C9-445A82758A69}.Release.ActiveCfg = Release|.NET
+		{DA8DBCFF-E8DE-463A-90C9-445A82758A69}.Release.Build.0 = Release|.NET
+		{1960CB65-BD01-4377-AA12-55A32E51A5FD}.Debug.ActiveCfg = Debug|.NET
+		{1960CB65-BD01-4377-AA12-55A32E51A5FD}.Debug.Build.0 = Debug|.NET
+		{1960CB65-BD01-4377-AA12-55A32E51A5FD}.Release.ActiveCfg = Release|.NET
+		{1960CB65-BD01-4377-AA12-55A32E51A5FD}.Release.Build.0 = Release|.NET
+		{A923CEE7-2009-44F5-92AC-819697A20F3C}.Debug.ActiveCfg = Debug|.NET
+		{A923CEE7-2009-44F5-92AC-819697A20F3C}.Debug.Build.0 = Debug|.NET
+		{A923CEE7-2009-44F5-92AC-819697A20F3C}.Release.ActiveCfg = Release|.NET
+		{A923CEE7-2009-44F5-92AC-819697A20F3C}.Release.Build.0 = Release|.NET
+		{B0064509-C7AD-4BA5-9A26-366B2E1795C6}.Debug.ActiveCfg = Debug|.NET
+		{B0064509-C7AD-4BA5-9A26-366B2E1795C6}.Debug.Build.0 = Debug|.NET
+		{B0064509-C7AD-4BA5-9A26-366B2E1795C6}.Release.ActiveCfg = Release|.NET
+		{B0064509-C7AD-4BA5-9A26-366B2E1795C6}.Release.Build.0 = Release|.NET
+		{44C97E64-40DC-4F68-AD5F-B627BA601BAF}.Debug.ActiveCfg = Debug|.NET
+		{44C97E64-40DC-4F68-AD5F-B627BA601BAF}.Debug.Build.0 = Debug|.NET
+		{44C97E64-40DC-4F68-AD5F-B627BA601BAF}.Release.ActiveCfg = Release|.NET
+		{44C97E64-40DC-4F68-AD5F-B627BA601BAF}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

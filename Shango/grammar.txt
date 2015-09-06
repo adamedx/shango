@@ -1,0 +1,12 @@
+Shango Grammar Specification
+----------------------------
+
+Created: 04.14.2002
+
+Overview
+--------
+
+The Shango command line grammar provides an intuitive yet flexible interface
+that allows users to interact very simply with the shell even as they wield
+powerful constructs for advanced scripting or utilize new forms of human input.
+The goals for the grammar are
